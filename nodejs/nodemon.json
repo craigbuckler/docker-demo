@@ -1,0 +1,13 @@
+{
+  "script": "./app.js",
+  "ext": "js json",
+  "ignore": [
+    "gulpfile.js",
+    ".git/*",
+    "node_modules/*",
+    "*.md"
+  ],
+  "legacyWatch": true,
+  "delay": 200,
+  "verbose": true
+}

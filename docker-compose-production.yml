@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+
+  nodejs:
+    environment:
+      - NODE_ENV=production
+    build:
+      context: ./nodejs
+      dockerfile: Dockerfile
+    container_name: nodejs
+    volumes:
+      - static:/home/node/app/static
+    networks:
+      - localnet
+    ports:
+      - "3000"
+    restart: on-failure
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    depends_on:
+      - nodejs
+    volumes:
+      - static:/home/node/app/static
+    networks:
+      - localnet
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  static:
+
+networks:
+  localnet:

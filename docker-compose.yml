@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+  nodejs:
+    environment:
+      - NODE_ENV=development
+    build:
+      context: ./nodejs
+      dockerfile: Dockerfile
+    container_name: nodejs
+    command: /bin/sh -c 'npm i && npm run debug'
+    volumes:
+      - ./nodejs:/home/node/app
+    networks:
+      - localnet
+    ports:
+      - "3000:3000"
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    depends_on:
+      - nodejs
+    volumes:
+      - ./nodejs/static:/home/node/app/static
+    networks:
+      - localnet
+    ports:
+      - "80:80"
+      - "443:443"
+
+networks:
+  localnet:
