@@ -88,7 +88,7 @@ See Dockerfile examples and [reference](https://docs.docker.com/engine/reference
 
 Each command is processed in order. A new build will only run what has changed so infrequent changes should be toward the top (`RUN npm install`) with more frequent changes to the bottom (`COPY . .`).
 
-Note that `alpine` images tend to be smaller than other Linux options (around 5MB download).
+`alpine` images tend to be smaller than other Linux options (around 5MB download).
 
 
 ### .dockerignore
@@ -304,3 +304,12 @@ Commands include:
 * [docker-compose.yml reference](https://docs.docker.com/compose/compose-file/)
 * [docker-compose CLI](https://docs.docker.com/compose/reference/overview/)
 * [Dive into Docker (SitePoint course)](https://www.sitepoint.com/premium/courses/dive-into-docker-3007/) - only lessons 6 and 7 are essential
+* [Docker for Node.js video](https://www.youtube.com/watch?v=Zgx0o8QjJk4)
+
+
+### General tips
+
+* Use Node.js slim may be preferable to alpine images. They are a little larger but more reliable and have more features.
+* Use even-numbered Node.js LTS releases.
+* Do not use forever or pm2 - use Docker to restart. Tini can help.
+* Use multi-stage builds, where images are built from each other ([Docker for Node.js video](https://www.youtube.com/watch?v=Zgx0o8QjJk4) around 25 mins in).

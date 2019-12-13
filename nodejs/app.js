@@ -16,16 +16,14 @@ const
   },
 
   express = require('express'),
-  favicon = require('serve-favicon'),
   app = express();
 
-// middleware
-app.use(favicon(dir.static + 'favicon.ico'));
+// middleware (compression and favicon handled by NGINX)
 app.use(express.static(dir.static, { index: false, maxAge: 1000 }));
 
 app.use((req, res, next) => {
 
-  // if (dev) res.append('Access-Control-Allow-Origin', '*'); // CORS local testing
+  if (dev) res.append('Access-Control-Allow-Origin', '*'); // CORS local testing
   res.append('Vary', 'X-Requested-With'); // HTTP/Ajax distinction
   next();
 

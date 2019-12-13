@@ -15,4 +15,4 @@ Access the shell while container is running with: `docker exec -it nodejs sh`
 Notes:
 
 * On Linux, the `-v` path can be `$PWD` for the current directory
-* `legacyWatch` must be enabled for [nodemon](https://nodemon.io/) (set in `nodemon.json`)
+* `legacyWatch` must be enabled for [nodemon](https://nodemon.io/) when running on some images (set `"legacyWatch": true` in `nodemon.json`).
