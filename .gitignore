@@ -7,6 +7,7 @@ npm-debug.log*
 
 .config
 .env
+mysql/data
 
 .ash_history
 .DS_Store

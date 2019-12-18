@@ -2,6 +2,18 @@ version: '3.7'
 
 services:
 
+  mysql:
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysecret
+    image: mysql:8
+    container_name: mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    networks:
+      - localnet
+    ports:
+      - "3306"
+
   nodejs:
     environment:
       - NODE_ENV=production
@@ -9,6 +21,8 @@ services:
       context: ./nodejs
       dockerfile: Dockerfile
     container_name: nodejs
+    depends_on:
+      - mysql
     volumes:
       - static:/home/node/app/static
     networks:

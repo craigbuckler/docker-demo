@@ -1,9 +1,11 @@
 # Docker demonstration
 
-An example Docker-based project which creates two lightweight, isolated environments:
+An example Docker-based project which creates four lightweight, isolated container environments:
 
-1. A Node.js Express server implementing HTML and JSON endpoint responses (`nodejs` directory).
-1. An NGINX server which implements static files and reverse proxying to the Express application with gzip compression, HTTPS, and automatic HTTP rewrites (`nginx` directory).
+1. A Node.js Express server implementing HTML and JSON endpoint responses (`nodejs` container/directory).
+1. An NGINX server which implements static files and reverse proxying to the Express application with gzip compression, HTTPS, and automatic HTTP rewrites (`nginx` container/directory).
+1. MySQL 8 (default image, `mysql` container/directory).
+1. Adminer database client (default image, development only, no files required).
 
 Development and production builds are provided. Development mode uses `nodemon`, `--inspect`, and can provide live reloading.
 
@@ -47,11 +49,12 @@ docker-compose up
 
 Open `https://localhost/` in any browser.
 
-Access shell of either container while running:
+Access shell of container while running:
 
 ```sh
 docker exec -it nginx sh
 docker exec -it nodejs sh
+docker exec -it mysql sh
 ```
 
 
@@ -193,9 +196,13 @@ Start both containers in development interactive mode where the STDOUT messages 
 docker container run -it --rm -e NODE_ENV=development -p 3000:3000 --net localnet -v /d/documents/projects/docker-demo/nodejs:/home/node/app --name nodejs --entrypoint '/bin/sh' nodejs -c 'npm i && npm run debug'
 
 docker container run -it --rm -p 80:80 -p 443:443 --net localnet --volumes-from nodejs --name nginx nginx
+
+docker run -d --rm --name mysql --net localnet -p 3306:3306 -v /d/documents/projects/docker-demo/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=mysecret mysql:8
+
+docker run -d --rm --name adminer --net localnet -p 8080:8080 adminer
 ```
 
-The system can be accessed at `https://localhost/`. The Node.js app can also be accessed directly at `http://localhost:3000/`.
+The system can be accessed at `https://localhost/`. The Node.js app can also be accessed directly at `http://localhost:3000/`. Adminer can be accessed at `http://localhost:8080/` - attach to the `mysql` server using the `root` user and password `mysecret`.
 
 Options include:
 
@@ -211,7 +218,7 @@ Options include:
 * `--user "$(id -u):$(id -g)"` run as a specific Linux user
 * `--shm-size` allocates more RAM
 
-`Ctrl + C` stops the container (it remains available unless `-rm` is set).
+`Ctrl + C` stops an interactive container (it remains available unless `-rm` is set).
 
 `Ctrl + P` then `Ctrl + Q` exits the interactive shell but the container remains active. Reattach with `docker attach <name>`.
 

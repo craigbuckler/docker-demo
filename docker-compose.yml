@@ -2,6 +2,18 @@ version: '3.7'
 
 services:
 
+  mysql:
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysecret
+    image: mysql:8
+    container_name: mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    networks:
+      - localnet
+    ports:
+      - "3306:3306"
+
   nodejs:
     environment:
       - NODE_ENV=development
@@ -9,6 +21,8 @@ services:
       context: ./nodejs
       dockerfile: Dockerfile
     container_name: nodejs
+    depends_on:
+      - mysql
     command: /bin/sh -c 'npm i && npm run debug'
     volumes:
       - ./nodejs:/home/node/app
@@ -31,6 +45,16 @@ services:
     ports:
       - "80:80"
       - "443:443"
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    depends_on:
+      - mysql
+    networks:
+      - localnet
+    ports:
+      - "8080:8080"
 
 networks:
   localnet:
