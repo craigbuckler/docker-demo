@@ -230,6 +230,14 @@ docker exec -it <name> sh
 
 (or use `bash` instead of `sh` where available.)
 
+For example, the database can be initialised with:
+
+```sh
+docker exec -i mysql mysql -u root -pmysecret < ./mysql/install.sql
+```
+
+Alternatively, launch Adminer and execute the content of `install.sql` in a SQL command.
+
 
 ### Launch in production mode
 
