@@ -18,7 +18,7 @@ Generate localhost SSL certificates on your system. Use [mkcert](https://github.
 mkcert-v1.4.1-windows-amd64.exe localhost 127.0.0.1 ::1
 ```
 
-Copy the resulting files to `./nginx/ssl/localhost.pem` and `./nginx/ssl/localhost-key.pem`.
+Copy the resulting files to `./nginx/ssl/cert.pem` and `./nginx/ssl/cert-key.pem` (not in Git repo).
 
 Now create a new local CA with:
 
@@ -33,9 +33,9 @@ Alternatively, use OpenSSL to create self-signed certificates after connecting t
 ```sh
 cd ssl
 apk add --update openssl
-openssl genrsa -out localhost-key.pem 1024
-openssl req -new -key localhost-key.pem -out localhost.csr
-openssl x509 -req -in localhost.csr -signkey localhost-key.pem -out localhost.pem
+openssl genrsa -out cert-key.pem 1024
+openssl req -new -key cert-key.pem -out cert.csr
+openssl x509 -req -in cert.csr -signkey cert-key.pem -out cert.pem
 ```
 
 ## Quick start
