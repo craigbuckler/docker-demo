@@ -1,12 +1,14 @@
 logs
 *.log
 
+package-lock.json
 node_modules/
 .npm
 npm-debug.log*
 
 .config
 .env
+nginx/ssl
 mysql/data
 
 .ash_history

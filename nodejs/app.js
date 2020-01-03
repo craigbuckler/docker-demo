@@ -15,6 +15,17 @@ const
     static: __dirname + '/static/'
   },
 
+  mysql = require('mysql2/promise'),
+  db = mysql.createPool({
+    host: 'mysql',
+    user: 'dbusr',
+    password: 'dbpass',
+    database: 'test',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  }),
+
   express = require('express'),
   app = express();
 
@@ -29,8 +40,27 @@ app.use((req, res, next) => {
 
 });
 
+// NGINX overrides this route
 app.get('/', (req, res) => res.send('Hello World!'));
+
+// simple web service
 app.get('/hello/:name', (req, res) => res.json({ message: `Hello ${ req.params.name || 'anonymous' }` }));
+
+// fetch all user records
+app.get('/user/', async (req, res) => {
+
+  const [rec] = await db.query('SELECT * FROM `user`;');
+  res.json(rec);
+
+});
+
+// fetch user by ID
+app.get('/user/:id', async (req, res) => {
+
+  const [rec] = await db.execute('SELECT * FROM `user` WHERE `id` = ?', [ req.params.id ]);
+  res.json(rec && rec.length ? rec[0] : null);
+
+});
 
 // 404 error
 app.use(function (req, res) {
