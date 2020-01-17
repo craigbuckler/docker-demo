@@ -236,6 +236,15 @@ For example, the database can be initialised with:
 docker exec -i mysql mysql -u root -pmysecret < ./mysql/install.sql
 ```
 
+This will not work on Windows, so copy the file to the container, access the shell, and run the import manually:
+
+```sh
+docker cp ./mysql/install.sql mysql:/
+docker exec -it mysql sh
+mysql -u root -pmysecret < init.sql
+exit
+```
+
 Alternatively, launch Adminer and execute the content of `install.sql` in a SQL command.
 
 
